@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F95EAA70-D052-4AD7-AE96-D1BBA4EF3428}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kolon.Core</RootNamespace>
+    <AssemblyName>Kolon.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Common, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.Common.4.3.0\lib\net451\System.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnonymousTypeBuilder.cs" />
+    <Compile Include="Test\BaseEntity.cs" />
+    <Compile Include="Test\BaseMapper.cs" />
+    <Compile Include="Test\BaseMapperService.cs" />
+    <Compile Include="Test\Column\ColumnAliasAttribute.cs" />
+    <Compile Include="Test\Column\ColumnAttribute.cs" />
+    <Compile Include="Test\CommandItem.cs" />
+    <Compile Include="Test\CommandRepository.cs" />
+    <Compile Include="Test\CommandResult.cs" />
+    <Compile Include="Test\CommandType.cs" />
+    <Compile Include="Test\CommandVerb.cs" />
+    <Compile Include="Test\DbDataReaderExtension.cs" />
+    <Compile Include="Test\DescriptionAttribute.cs" />
+    <Compile Include="Test\ExpressionEvaluator.cs" />
+    <Compile Include="Test\ExpressionOpCode.cs" />
+    <Compile Include="Test\ExpressionToken.cs" />
+    <Compile Include="Test\Initializer.cs" />
+    <Compile Include="Test\Interface\Interface.cs" />
+    <Compile Include="Test\Log\Logger.cs" />
+    <Compile Include="Test\Log\LoggingState.cs" />
+    <Compile Include="Test\Log\LoggingType.cs" />
+    <Compile Include="Test\Log\LogInfo.cs" />
+    <Compile Include="Test\Log\LogLevel.cs" />
+    <Compile Include="Test\Log\LogManager.cs" />
+    <Compile Include="Test\Log\LogSetting.cs" />
+    <Compile Include="Test\Log\LogVo.cs" />
+    <Compile Include="Test\Mapper\MapperCombineScope.cs" />
+    <Compile Include="Test\Mapper\MapperCombineState.cs" />
+    <Compile Include="Test\Mapper\MapperCommand.cs" />
+    <Compile Include="Test\Mapper\MapperParameter.cs" />
+    <Compile Include="Test\Mapper\MapperParameterItem.cs" />
+    <Compile Include="Test\Mapper\MapperProvider.cs" />
+    <Compile Include="Test\Mapper\MapperProviderAttribute.cs" />
+    <Compile Include="Test\Mapper\MapperProviderInfo.cs" />
+    <Compile Include="Test\MatchItem.cs" />
+    <Compile Include="Test\MatchType.cs" />
+    <Compile Include="Test\MatchValue.cs" />
+    <Compile Include="Test\ModelLoader.cs" />
+    <Compile Include="Test\ModelLoaderAttribute.cs" />
+    <Compile Include="Test\MssqlProvider.cs" />
+    <Compile Include="Test\ParameterAttribute.cs" />
+    <Compile Include="Test\ParameterPrefix.cs" />
+    <Compile Include="Test\ParameterSource.cs" />
+    <Compile Include="Test\PrimaryKeyAttribute.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\ProviderParameterAttribute.cs" />
+    <Compile Include="Test\RequiredAttribute.cs" />
+    <Compile Include="Test\SourceBuilder.cs" />
+    <Compile Include="Test\SqlColumnType.cs" />
+    <Compile Include="Test\SqlDataType.cs" />
+    <Compile Include="System\BaseCode.cs" />
+    <Compile Include="System\Code.cs" />
+    <Compile Include="System\Data\SqlHelper.cs" />
+    <Compile Include="System\Data\SqlHelperParameterCache.cs" />
+    <Compile Include="System\DateTimeExtension.cs" />
+    <Compile Include="System\DefaultCodeAttribute.cs" />
+    <Compile Include="System\EnumExtension.cs" />
+    <Compile Include="System\FileRootAttribute.cs" />
+    <Compile Include="System\FileTypeCode.cs" />
+    <Compile Include="System\FileTypeCodeAttribute.cs" />
+    <Compile Include="System\FileTypeCode_TCode_.cs" />
+    <Compile Include="System\ICode.cs" />
+    <Compile Include="System\IgnoreAttribute.cs" />
+    <Compile Include="System\INumericCode.cs" />
+    <Compile Include="System\ListExtension.cs" />
+    <Compile Include="System\NameAttribute.cs" />
+    <Compile Include="System\NotInitTypeAttribute.cs" />
+    <Compile Include="System\NumericCode_TCode_.cs" />
+    <Compile Include="System\ObjectExtension.cs" />
+    <Compile Include="System\ParamterTypeAttribute.cs" />
+    <Compile Include="System\Sequence.cs" />
+    <Compile Include="System\StringExtension.cs" />
+    <Compile Include="System\WebPath.cs" />
+    <Compile Include="System\XmlNodeExtension.cs" />
+    <Compile Include="Test\ValueObject\ValueCollection_T_.cs" />
+    <Compile Include="Test\ValueObject\ValueColumn.cs" />
+    <Compile Include="Test\ValueObject\ValueColumnCollection.cs" />
+    <Compile Include="Test\ValueObject\ValueObject.cs" />
+    <Compile Include="Test\ValueObject\ValueRow.cs" />
+    <Compile Include="Test\ValueObject\ValueRowCollection.cs" />
+    <Compile Include="Test\ValueObject\ValueRowExtension.cs" />
+    <Compile Include="Test\ValueObject\ValueSet.cs" />
+    <Compile Include="Test\ValueObject\ValueSetExtension.cs" />
+    <Compile Include="Test\ValueObject\ValueTable.cs" />
+    <Compile Include="Test\ValueObject\ValueTableCollection.cs" />
+    <Compile Include="Test\ValueObject\ValueTableExtension.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

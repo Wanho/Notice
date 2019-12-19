@@ -1,0 +1,11 @@
+﻿
+/* Custom Sb-admin 2 */
+.text-md {
+    font-size: .9rem;
+}
+
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

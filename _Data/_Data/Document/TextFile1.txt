@@ -1,0 +1,16 @@
+﻿
+
+* 프로젝트 명
+	- *.Core
+	- *.Data
+	- *.Data.Core
+	- *.Model
+	- *.Service
+	- *.Web
+
+
+
+- Mvc 5.2 ( .Net Framework 4.6.1 )
+- Code First 단계는 패스
+- Interop.SLOAGENTLib.dll ( SSO Id Check )
+

@@ -1,0 +1,114 @@
+﻿@{
+    long totalCount = Model.TotalCount;
+    int pageSize = Model.PageSize;
+    int pageNumber = Model.PageNumber;
+
+    if (totalCount <= Model.PageSize)
+    {
+        //return;
+    }
+
+    long totalPage = (totalCount - 1) / pageSize + 1; // (totalCount - 1) / pageSize + 1 > 50 ? 50 :
+    ;
+    int maxCount = 10; // 최대 출력할 페이지 개수
+    long startPage = 0;
+    long endPage = 0;
+
+    // 출력할때 시작할 페이지 번호
+    if (pageNumber % maxCount == 0)
+    {
+        startPage = (pageNumber / maxCount - 1) * maxCount + 1;
+    }
+    else
+    {
+        startPage = (pageNumber / maxCount) * maxCount + 1;
+    }
+
+    // 출력할때 맨끝에 출력될 페이지 번호
+    if ((startPage + maxCount - 1) > totalPage)
+    {
+        endPage = totalPage;
+    }
+    else
+    {
+        endPage = startPage + maxCount - 1;
+    }
+
+}
+<style>
+    .page-item.active .page-link { z-index: 1; color: #fff; background-color: #17a673; border-color: #169b6b; }
+    .page-link { color: #17a673; }
+</style>
+<div class="row" id="paging">
+    <div class="col-sm-12 col-md-5">
+        <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">(@($"{pageNumber}/{ totalPage } page")) @totalCount entries</div>
+    </div>
+    <div class="col-sm-12 col-md-7">
+        <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+            <ul class="pagination pagination-sm">
+                <li class="paginate_button page-item preious @(pageNumber == 1 ? "disabled" : "")" id="dataTable_previous">
+                    <a href="#" aria-controls="dataTable" data-dt-idx="@(pageNumber == -1 ? 1 : pageNumber - 1)" class="page-link">Previous</a>
+                </li>
+                @for (long i = startPage; i <= endPage; i++)
+                {
+                    if (pageNumber == i)
+                    {
+                        <li class="paginate_button page-item active"><a href="#" class="page-link" data-dt-idx="@i">@i</a></li>
+                    }
+                    else
+                    {
+                        <li class="paginate_button page-item"><a href="#" class="page-link" data-dt-idx="@i">@i</a></li>
+                    }
+                }
+                <li class="paginate_button page-item next" id="dataTable_next">
+                    <a href="#" aria-controls="dataTable" data-dt-idx="@(pageNumber < totalPage ? pageNumber + 1 : totalPage)" class="page-link">Next</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@*<div class="paging-container">
+        <div class="pull-left paging-count">Total <span class="paging-total text-violet">@totalCount</span> (@($"{pageNumber}/{ totalPage } page"))</div>
+        <div class="text-center">
+            <nav>
+                <ul class="pagination pagination-sm">
+                    @if (pageNumber != 1)
+                    {
+                        <li class="paging-side first">
+                            <a aria-label="First" href="#" page="1">
+                                <span aria-hidden="true">First</span>
+                            </a>
+                        </li>
+                        <li class="paging-side prev">
+                            <a class="page-link" href="#" aria-label="Previous" page="@(startPage > 10 ? startPage - maxCount : 1)">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                    }
+                    @for (long i = startPage; i <= endPage; i++)
+                    {
+                        if (pageNumber == i)
+                        {
+                            <li class="active"><a href="#">@i</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="#" page="@i">@i</a></li>
+                        }
+                    }
+                    <li class="paging-side next10">
+                        <a aria-label="Next10" href="#" page="@(endPage < totalPage ? endPage + 1 : totalPage)">
+                            <span aria-hidden="true">»</span>
+                        </a>
+                    </li>
+                    <li class="paging-side last">
+                        <a aria-label="Last" href="#" page="@totalPage">
+                            <span aria-hidden="true">Last</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>*@

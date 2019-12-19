@@ -1,0 +1,33 @@
+﻿@model object
+@{
+    string prefix = ViewData["Prefix"] as string;
+
+    foreach (var property in ViewData.Model.GetType().GetProperties())
+    {
+        if (property.Name == "Item")
+        {
+            continue;
+        }
+
+        var attr = property.GetCustomAttributes(typeof(Notice.Data.Core.Custom_HideAttribute), false);
+        if (attr.Length > 0)
+        {
+            continue;
+        }
+
+        object val = property.GetValue(ViewData.Model, null);
+        if (val is DateTime)
+        {
+            if ((DateTime)val >= new DateTime(1900, 1, 1))
+            {
+                val = ((DateTime)val).ToString(Const.DateHHmmss);
+            }
+            else
+            {
+                val = string.Empty;
+            }
+        }
+
+        <input type="hidden" id="h@(prefix)@(property.Name)" name="@property.Name" value="@val" />
+    }
+}

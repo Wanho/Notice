@@ -1,0 +1,35 @@
+﻿@using Notice.Data.Core
+@using Notice.Model
+@model BoardSearchModel
+@{
+    
+}
+
+<div class="col-md-4">
+    <div class="input-group input-group-sm" id="dataTables_length">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">보기설정</label>
+        </div>
+        <select name="dataTable_length" id="dataTableSelect" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm" style="max-width:110px;">
+            <option value="10" @(Model.PageSize == 10 ? "selected" : "")>10</option>
+            <option value="15" @(Model.PageSize == 15 ? "selected" : "")>15</option>
+            <option value="30" @(Model.PageSize == 30 ? "selected" : "")>30</option>
+        </select>
+    </div>
+</div>
+<div class="col-md-3 offset-md-5" id="dataTables_filter">
+    <div class="input-group input-group-sm">
+        <select class="form-control" id="dataTables_filterArea">
+            <option value="">선택</option>
+            <option value="Title" @(Model.Area == "Title" ? "selected" : "")>제목</option>
+            <option value="UserName" @(Model.Area == "UserName" ? "selected" : "")>글쓴이</option>
+            <option value="ArticleCD" @(Model.Area == "ArticleCD" ? "selected" : "")>글넘버</option>
+        </select>
+        <input type="text" class="form-control" id="dataTables_filterWord" value="@Model.Word" />
+        <div class="input-group-append">
+            <button class="btn btn-success" type="button" id="btnSearch">
+                <i class="fas fa-search fa-sm"></i>
+            </button>
+        </div>
+    </div>
+</div>

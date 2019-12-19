@@ -1,0 +1,21 @@
+﻿@using Notice.Data.Core
+@using Notice.Model
+@model BoardSearchModel
+@{
+    string classSort = "";
+    if (Model.SortOrder == SortOrder.Desc) {
+        classSort = "class=sorting_desc aria-sort=descending";
+    } else {
+        classSort = "class=sorting_asc aria-sort=ascending";
+    }
+
+    BoardSortType SortColumnType = (BoardSortType)Model.SortColumn;
+}
+<tr role="row">
+    <th style="width:100px" @(SortColumnType == BoardSortType.ArticleCD ? classSort : "class=sorting") aria-controls="dataTable" aria-title="@BoardSortType.ArticleCD" >글넘버</th>
+    <th style="width:auto;" @(SortColumnType == BoardSortType.Title ? classSort : "class=sorting") aria-controls="dataTable" aria-title="@BoardSortType.Title">제목</th>
+    <th style="width:150px" @(SortColumnType == BoardSortType.Company ? classSort : "class=sorting") aria-controls="dataTable" aria-title="@BoardSortType.Company">회사</th>
+    <th style="width:100px" @(SortColumnType == BoardSortType.UserName ? classSort : "class=sorting") aria-controls="dataTable" aria-title="@BoardSortType.UserName">글쓴이</th>
+    <th style="width:160px" @(SortColumnType == BoardSortType.SortCreateDate ? classSort : "class=sorting") aria-controls="dataTable" aria-title="@BoardSortType.SortCreateDate">작성일</th>
+    <th style="width:80px"  @(SortColumnType == BoardSortType.ViewCnt ? classSort : "class=sorting") aria-controls="dataTable" aria-title="@BoardSortType.ViewCnt">조회수</th>
+</tr>

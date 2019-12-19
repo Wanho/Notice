@@ -1,0 +1,56 @@
+﻿
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <title>공지시스템</title>
+    <link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/FontAwesome/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/Page/Login.css" rel="stylesheet" />
+    <script src="~/Scripts/Jquery/jquery-3.3.1.js"></script>
+    <script type="text/javascript">
+        function fn_SubmitCheck() {
+            if ($("#userID").val() == "") {
+                alert("아이디를 입력해 주십시오");
+                return false;
+            }
+
+            if ($("#password").val() == "") {
+                alert("비밀번호를 입력해 주십시오");
+                return false;
+            }
+
+            $("form").submit();
+        }
+    </script>
+</head>
+<body class="text-center">
+    <form class="form-signin rounded-lg" method="post">
+        <h1 class="h3 mb-3 font-weight-normal">공지시스템</h1>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
+            </div>
+            <input type="text" id="userID" name="userID" class="form-control" placeholder="아이디" aria-label="아이디" aria-describedby="basic-addon1" />
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon2"><i class="fa fa-lock"></i></span>
+            </div>
+            <input type="password" id="password" name="password" class="form-control mb-0" placeholder="비밀번호" aria-label="비밀번호" aria-describedby="basic-addon2" />
+        </div>
+        
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me" /> 아이디 저장
+            </label>
+        </div>
+        <button class="btn btn-lg btn-secondary btn-block" type="button" onclick="fn_SubmitCheck();">로그인</button>
+        <br />
+        <img class="mb-4" src="~/Images/title_login1.gif" />
+        <img class="mb-4" src="~/Images/title_login2.gif" />
+    </form>
+    
+</body>
+</html>
