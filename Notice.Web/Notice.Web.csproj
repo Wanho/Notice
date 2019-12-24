@@ -144,10 +144,6 @@
     <Content Include="App_Data\NoticeDB_log.ldf">
       <DependentUpon>NoticeDB.mdf</DependentUpon>
     </Content>
-    <Content Include="App_Data\TestDB.mdf" />
-    <Content Include="App_Data\TestDB_log.ldf">
-      <DependentUpon>TestDB.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\FontAwesome\all.css" />
     <Content Include="Content\FontAwesome\all.min.css" />
     <Content Include="Content\Bootstrap\bootstrap-grid.css" />
