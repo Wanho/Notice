@@ -140,6 +140,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\NoticeDB.mdf" />
+    <Content Include="App_Data\NoticeDB_log.ldf">
+      <DependentUpon>NoticeDB.mdf</DependentUpon>
+    </Content>
+    <Content Include="App_Data\TestDB.mdf" />
+    <Content Include="App_Data\TestDB_log.ldf">
+      <DependentUpon>TestDB.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\FontAwesome\all.css" />
     <Content Include="Content\FontAwesome\all.min.css" />
     <Content Include="Content\Bootstrap\bootstrap-grid.css" />
@@ -154,6 +162,7 @@
     <Content Include="Content\FontAwesome\font-awesome.min.css" />
     <Content Include="Content\Page\Login.css" />
     <Content Include="Content\Bootstrap\Theme\sb-admin-2.css" />
+    <Content Include="Images\Logo.png" />
     <Content Include="Scripts\BootStrap\Theme\sb-admin-2.js" />
     <Content Include="Content\Bootstrap\Theme\sb-admin-2.min.css" />
     <Content Include="Scripts\BootStrap\Theme\sb-admin-2.min.js" />
@@ -161,8 +170,6 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Page\Site.css" />
-    <Content Include="Images\title_login1.gif" />
-    <Content Include="Images\title_login2.gif" />
     <Content Include="index.html" />
     <Content Include="Scripts\BootStrap\bootstrap.bundle.js" />
     <Content Include="Scripts\BootStrap\bootstrap.bundle.min.js" />
@@ -247,10 +254,9 @@
     <Content Include="Views\Notice\BoardHeader.cshtml" />
     <Content Include="Views\Shared\PageHeader.cshtml" />
     <Content Include="Views\Notice\BoardAction.cshtml" />
+    <Content Include="Views\Frame\Register.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\Jquery\jquery-3.3.1.slim.min.map" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 using Notice.Data.Core;
 using Notice.Model;
 using Notice.Service;
@@ -16,7 +17,10 @@ namespace Notice.Web
 
         public UserState(HttpContextBase context, UserModel userModel)
         {
-            user = userModel;
+            if(userModel == null)
+                return;
+
+            user = userModel;    
             httpContext = context;
             cookies = httpContext.Request.Cookies[Const.Name];
 
@@ -29,7 +33,7 @@ namespace Notice.Web
                 httpContext.Request.Cookies.Add(cookies);
             }
 
-            if (string.IsNullOrEmpty(userModel.CN)) return;
+            if (string.IsNullOrEmpty(userModel.ID)) return;
         }
 
         public static UserModel LoadUser(string userId)

@@ -37,7 +37,7 @@
                         <div class="card fat">
                             <div class="card-body">
                                 <form class="form-signin rounded-lg" method="post">
-                                    <h4 class="card-title">Login</h4>
+                                    <h4 class="card-title">Register</h4>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
@@ -50,6 +50,12 @@
                                         </div>
                                         <input type="password" id="password" name="password" class="form-control mb-0" placeholder="Password" aria-label="Password" aria-describedby="basic-addon2" />
                                     </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon2"><i class="fa fa-lock"></i></span>
+                                        </div>
+                                        <input type="password" id="passwordCheck" name="password" class="form-control mb-0" placeholder="Password" aria-label="Password" aria-describedby="basic-addon2" />
+                                    </div>
                                     <div class="checkbox">
                                         <label>
                                             <input type="checkbox" value="remember-me" /> Remember Me
@@ -57,7 +63,7 @@
                                     </div>
                                     <button class="btn btn-lg btn-primary btn-block" type="button" onclick="fn_SubmitCheck();">Login</button>
                                     <br />
-                                    Don't have an account? <a href="@Url.Action("Logout", "Frame")">Create One</a>
+                                    Already have an account? <a href="@Url.Action("Register", "Frame")">Login</a>
                                 </form>
                             </div>
                         </div>

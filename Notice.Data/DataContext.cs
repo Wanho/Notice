@@ -8,14 +8,14 @@ namespace Notice.Data
 {
     public class DataContext : DbContext
     {
-        public DataContext() : base("DefaultConnection")
+        public DataContext() : base("name=DefaultConnection")
         {
-
+            Database.SetInitializer<DataContext>(null);
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            //modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
     }
 }

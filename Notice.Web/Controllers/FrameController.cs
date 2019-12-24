@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Notice.Data.Core;
+using Notice.Model;
+using Notice.Service;
 using System.Web.Mvc;
 using System.Web.Security;
-using Notice.Core;
-using Notice.Data.Core;
-using Notice.Service;
 
 namespace Notice.Controllers
 {
@@ -38,7 +34,9 @@ namespace Notice.Controllers
         [HttpPost]
         public ActionResult Login(string userID, string password)
         {
-            var user = userService.GetUser(userID);
+            var user = userService.GetUser(userID, password);
+
+            //var user = userService.GetUser(userID);
 
             if (user == null)
             {
@@ -49,7 +47,7 @@ namespace Notice.Controllers
                 // DB 에 사용자가 있고 Password 체크
                 if (password == "test")
                 {
-                    FormsAuthentication.SetAuthCookie(user.CN, false);
+                    FormsAuthentication.SetAuthCookie(user.ID, false);
 
                     return RedirectToAction("Board", "Notice");
                 }
@@ -66,6 +64,20 @@ namespace Notice.Controllers
             FormsAuthentication.SignOut();
 
             return Redirect("Login");
+        }
+
+        [HttpGet]
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Register(UserModel userModel)
+        {
+            userService.CreateUser(userModel);
+
+            return new EmptyResult();
         }
 
 

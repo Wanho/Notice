@@ -18,19 +18,30 @@ namespace Notice.Service
             dbContext = new DataContext();
         }
 
-        public UserModel GetUser(string userID)
+        public UserModel GetUser(string id, string pass)
         {
-            string strSql = @"SELECT 
-                                    [CN], [DisplayName], [DisplayName2], [mail]
-                                    ,[Department], [Description], [Description2]
-                                    ,[PhysicalDeliveryOfficeName], [Company], [Company2]
-                                    ,[TitleCD], [Title], [Title2]
-                                    ,[EmpNo]
-                                FROM GWINSA.ezHrmaster.dbo.TBLUserMaster WHERE CN = @userID";
+            string strSql = @"SELECT id FROM TB_User WHERE Id = @id and password = @pass";
 
-            var user = dbContext.Database.SqlQuery<UserModel>(strSql, new[] {new SqlParameter("@userID", userID) }).SingleOrDefault();
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@id", id));
+            parameters.Add(new SqlParameter("@pass", pass));
 
-            return user;
+            var rtnVal = dbContext.Database.SqlQuery<UserModel>(strSql, parameters.ToArray()).FirstOrDefault();
+
+            return rtnVal;
+        }
+
+        public UserModel GetUser(string id)
+        {
+            string strSql = @"SELECT id FROM TB_User WHERE Id = @id";
+
+            var rtnVal = dbContext.Database.SqlQuery<UserModel>(strSql, new SqlParameter("@id", id)).FirstOrDefault();
+
+            return rtnVal;
+        }
+
+        public void CreateUser(UserModel user)
+        {
 
         }
     }
