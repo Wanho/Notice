@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace Notice.Data.Core
 {
     // 암호 디코드 추후 포탈에서 만들면 변경예정
+
     public class AES
     {
         #region AES
@@ -566,5 +568,54 @@ namespace Notice.Data.Core
 
         }
         #endregion
+    }
+
+    public class Hash
+    {
+        public class HashSalt
+        {
+            public string Hash { get; set; }
+            public string Salt { get; set; }
+        }
+
+        public static string GetSaltKey(int saltLength)
+        {
+            return Convert.ToBase64String(GetSalt(saltLength));
+        }
+
+        public static byte[] GetSalt(int saltLength)
+        {
+            byte[] salt = new byte[saltLength];
+            using ( var random = new RNGCryptoServiceProvider()) {
+                random.GetNonZeroBytes(salt);
+            }
+            return salt;
+        }
+
+        public static HashSalt GenerateSHA256Hash(int size, string password)
+        {
+            var saltBytes = new byte[size];
+            var salt = GetSaltKey(size);
+
+            var rfc2898DeriveBytes = new Rfc2898DeriveBytes(password, saltBytes, 10000);
+            var hashPassword = Convert.ToBase64String(rfc2898DeriveBytes.GetBytes(256));
+
+            HashSalt hashSalt = new HashSalt { Hash = hashPassword, Salt = salt };
+            return hashSalt;
+
+            //byte[] salt = GetSalt(32);
+            //byte[] passwordAsBytes = Encoding.UTF8.GetBytes(password);
+
+            //var bytes = new byte[salt.Length + passwordAsBytes.Length];
+            //Buffer.BlockCopy(passwordAsBytes, 0, bytes, 0, passwordAsBytes.Length);
+
+            //Buffer.BlockCopy(src, 0, dst, 0, src.Length);
+            //Buffer.BlockCopy(bytes, 0, dst, src.Length, bytes.Length);
+            //HashAlgorithm algorithm = HashAlgorithm.Create("SHA1");
+
+            //byte[] bytes = block
+            //byte[] hash = this.Generate(password, salt);
+            //return string.Format("{0}:{1}", Convert.ToBase64String(salt), Convert.ToBase64String(hash));
+        }
     }
 }
