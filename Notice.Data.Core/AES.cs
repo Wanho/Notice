@@ -5,6 +5,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using System.IO;
+
+
 
 namespace Notice.Data.Core
 {
@@ -570,52 +573,136 @@ namespace Notice.Data.Core
         #endregion
     }
 
-    public class Hash
+    public enum PasswordVerificationResult
     {
-        public class HashSalt
-        {
-            public string Hash { get; set; }
-            public string Salt { get; set; }
-        }
+        Failed = 0,
+        Success = 1,
+        SuccessRehashNeeded = 2
+    }
 
-        public static string GetSaltKey(int saltLength)
-        {
-            return Convert.ToBase64String(GetSalt(saltLength));
-        }
+    public class HashWithSlat
+    {
+        //byte[] hashPassword = ComputeHash(password);
+        //byte[] hashValue = GenerateSecureHashValue(hashPassword, salt, Iterations);
+        //byte[] IterationsBytes = BitConverter.GetBytes(Iterations);
+        //byte[] valueToSave = new byte[saltSize + DerivedKeyLength + IterationsBytes.Length];
+        //Buffer.BlockCopy(salt, 0, valueToSave, 0, saltSize);
+        //Buffer.BlockCopy(hashValue, 0, valueToSave, saltSize, DerivedKeyLength);
+        //Buffer.BlockCopy(IterationsBytes, 0, valueToSave, salt.Length + hashValue.Length, IterationsBytes.Length);
 
-        public static byte[] GetSalt(int saltLength)
+        private const int saltSize = 24;
+        private const int hashSize = 20;
+        private const int DerivedSize = 16;
+        private const int IterationSize = 50000;
+
+        private static byte[] GenerateSalt()
         {
-            byte[] salt = new byte[saltLength];
-            using ( var random = new RNGCryptoServiceProvider()) {
+            byte[] salt = new byte[saltSize];
+            using (var random = new RNGCryptoServiceProvider())
+            {
                 random.GetNonZeroBytes(salt);
             }
             return salt;
         }
 
-        public static HashSalt GenerateSHA256Hash(int size, string password)
+        private static byte[] GenerateSHA256(string password)
         {
-            var saltBytes = new byte[size];
-            var salt = GetSaltKey(size);
-
-            var rfc2898DeriveBytes = new Rfc2898DeriveBytes(password, saltBytes, 10000);
-            var hashPassword = Convert.ToBase64String(rfc2898DeriveBytes.GetBytes(256));
-
-            HashSalt hashSalt = new HashSalt { Hash = hashPassword, Salt = salt };
-            return hashSalt;
-
-            //byte[] salt = GetSalt(32);
-            //byte[] passwordAsBytes = Encoding.UTF8.GetBytes(password);
-
-            //var bytes = new byte[salt.Length + passwordAsBytes.Length];
-            //Buffer.BlockCopy(passwordAsBytes, 0, bytes, 0, passwordAsBytes.Length);
-
-            //Buffer.BlockCopy(src, 0, dst, 0, src.Length);
-            //Buffer.BlockCopy(bytes, 0, dst, src.Length, bytes.Length);
-            //HashAlgorithm algorithm = HashAlgorithm.Create("SHA1");
-
-            //byte[] bytes = block
-            //byte[] hash = this.Generate(password, salt);
-            //return string.Format("{0}:{1}", Convert.ToBase64String(salt), Convert.ToBase64String(hash));
+            using (SHA256 sha256 = SHA256Managed.Create())
+            {
+                return sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            }
         }
+
+        private static byte[] GenerateHashWithSalt(byte[] hash, byte[] salt, int Iteration)
+        {
+            using (var pbkdf2 = new Rfc2898DeriveBytes(hash, salt, Iteration))
+            {
+                return pbkdf2.GetBytes(DerivedSize);
+            }
+        }
+
+        private static byte[] GenerateSecureHashValue(byte[] password, byte[] salt, int iterationCount)
+        {
+            using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterationCount))
+            {
+                return pbkdf2.GetBytes(DerivedSize);
+            }
+        }
+
+        private static bool ConstantTimeComparison(byte[] dataGuessHash, byte[] savedHash)
+        {
+            uint difference = (uint)dataGuessHash.Length ^ (uint)savedHash.Length;
+
+            for (var i = 0; i < dataGuessHash.Length && i < savedHash.Length; i++)
+            {
+                difference |= (uint)(dataGuessHash[i] ^ savedHash[i]);
+            }
+
+            return difference == 0;
+        }
+
+        private static bool CompareGenerateHash(string hashSalt, string password)
+        {
+            if (string.IsNullOrEmpty(hashSalt) || string.IsNullOrEmpty(password))
+                return false;
+
+            byte[] salt = new byte[saltSize];
+            byte[] passwordGuess = Convert.FromBase64String(password);
+            byte[] hashSaltSaved = Convert.FromBase64String(hashSalt);
+
+            byte[] hashSaltActual = new byte[DerivedSize];
+            byte[] iterationByte = new byte[hashSaltSaved.Length - (salt.Length + hashSaltActual.Length)];
+
+            Buffer.BlockCopy(hashSaltSaved, 0, salt, 0, saltSize);
+            Buffer.BlockCopy(hashSaltSaved, saltSize, hashSaltActual, 0, hashSaltActual.Length);
+            Buffer.BlockCopy(hashSaltSaved, (salt.Length + hashSaltActual.Length), iterationByte, 0, hashSaltSaved.Length - (salt.Length + hashSaltActual.Length));
+
+            byte[] hashWithSalt = GenerateHashWithSalt(passwordGuess, salt, BitConverter.ToInt32(iterationByte, 0));
+
+            return ConstantTimeComparison(hashWithSalt, hashSaltActual);
+        }
+
+        public static string GenerateHash(string password)
+        {
+            byte[] salt = GenerateSalt();
+            byte[] hash = GenerateSHA256(password);
+            byte[] hashWithSalt = GenerateHashWithSalt(hash, salt, IterationSize);
+
+            byte[] Iteration = BitConverter.GetBytes(IterationSize);
+            byte[] valueToSave = new byte[saltSize + DerivedSize + Iteration.Length];
+
+            Buffer.BlockCopy(salt, 0, valueToSave, 0, saltSize);
+            Buffer.BlockCopy(hashWithSalt, 0, valueToSave, saltSize, DerivedSize);
+            Buffer.BlockCopy(Iteration, 0, valueToSave, salt.Length + hashWithSalt.Length, Iteration.Length);
+
+            return Convert.ToBase64String(valueToSave);
+        }
+
+        public static PasswordVerificationResult VerifyHashedPassword(string hashPassword, string password)
+        {
+            password = Convert.ToBase64String(GenerateSHA256(password));
+
+            bool result = CompareGenerateHash(hashPassword, password);
+
+            return result ? PasswordVerificationResult.Success : PasswordVerificationResult.Failed;
+        }
+
+        //private static byte[] ComputeHash(string password)
+        //{
+        //    using (MemoryStream ms = new MemoryStream())
+        //    using (StreamWriter sw = new StreamWriter(ms))
+        //    {
+        //        sw.Write(password);
+        //        sw.Flush();
+        //        ms.Position = 0;
+
+        //        using (SHA256CryptoServiceProvider provider = new SHA256CryptoServiceProvider())
+        //            return provider.ComputeHash(ms);
+        //    }
+        //}
+
+        
+
+       
     }
 }

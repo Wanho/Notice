@@ -25,8 +25,8 @@ namespace Notice.Controllers
         {
            if (User.Identity.IsAuthenticated)
             {
-                var userModel = UserState.LoadUser(User.Identity.Name);
-                UserState = new UserState(filterContext.HttpContext, userModel);
+                var user = UserState.LoadUser(User.Identity.Name);
+                UserState = new UserState(filterContext.HttpContext, user);
 
                 FormsIdentity id = (FormsIdentity)User.Identity;
 
@@ -55,7 +55,7 @@ namespace Notice.Controllers
             }
             else
             {
-                UserState = new UserState(filterContext.HttpContext, new UserModel());
+                UserState = new UserState(filterContext.HttpContext, new User());
             }
 
             //Text = new LanguageManager(UserState.Language);

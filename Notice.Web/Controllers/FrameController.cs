@@ -34,28 +34,38 @@ namespace Notice.Controllers
         [HttpPost]
         public ActionResult Login(string userID, string password)
         {
-            var user = userService.GetUser(userID, password);
-
-            //var user = userService.GetUser(userID);
-
-            if (user == null)
+            
+            if(userService.Verification(userID, password))
             {
-                return Content("<script language='javascript' type='text/javascript'>alert('아이디 비밀번호를 확인해 주십시오.'); location.href = 'Login';</script>");
+                FormsAuthentication.SetAuthCookie(userID, false);
+
+                return RedirectToAction("Board", "Notice");
             }
             else
             {
-                // DB 에 사용자가 있고 Password 체크
-                if (password == "test")
-                {
-                    FormsAuthentication.SetAuthCookie(user.ID, false);
-
-                    return RedirectToAction("Board", "Notice");
-                }
-                else
-                {
-                    return Content("<script language='javascript' type='text/javascript'>alert('아이디 비밀번호를 확인해 주십시오.');  location.href = 'Login';</script>");
-                }
+                return Content("<script language='javascript' type='text/javascript'>alert('아이디 비밀번호를 확인해 주십시오.'); location.href = 'Login';</script>");
             }
+
+            //var user = userService.GetUser(userID, password);
+
+            ////var user = userService.GetUser(userID);
+
+            //if (user == null)
+            //{
+                
+            //}
+            //else
+            //{
+            //    // DB 에 사용자가 있고 Password 체크
+            //    if (password == "test")
+            //    {
+                    
+            //    }
+            //    else
+            //    {
+            //        return Content("<script language='javascript' type='text/javascript'>alert('아이디 비밀번호를 확인해 주십시오.');  location.href = 'Login';</script>");
+            //    }
+            //}
         }
 
         [Custom_Authorize(nameof(AuthType.None))]
