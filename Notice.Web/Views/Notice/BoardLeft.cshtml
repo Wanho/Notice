@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Notice.Model.BoardInfoModel>
+@using System.Web.UI.WebControls
+@using Notice.Models
+
+<link href="~/Content/jsTree/themes/default/style.min.css" rel="stylesheet" />
+@section scripts
+{
+    <script src="~/Scripts/jsTree3/jstree.min.js"></script>
+    <script>
+        $(function () {
+            var selectedData;
+            $('#jstree').jstree({
+                "core": {
+                    "multiple": true,
+                    "check_callback": false,
+                    'themes': {
+                        "responsive": true,
+                        'variant': 'larg',
+                        'stripes': false,
+                        'dots': false
+                    }
+                },
+                "types": {
+                    "default": {
+                        "icon": "fa fa-folder icon-state-warning icon-lg"
+                    },
+                    "file": {
+                        "icon": "fa fa-file icon-state-warning icon-lg"
+                    }
+                },
+                "plugins": ["dnd", "state", "types", "sort", "checkbox"]
+            });
+        });
+    </script>
+}
+
+<div class="form-body">
+    <div id="jstree">
+        @(Html.TreeView(Model)
+            .EmptyContent("게시판")
+            .Children(m => m.Childs)
+            .HtmlAttributes(new { id = "tree" })
+            .ChildrenHtmlAttributes(new { @class = "subItem" })
+            .ItemText(m => m.BoardName)
+            .ItemTemplate(@<text><a href="@item.BoardDescription" desc="@item.BoardDescription">@item.BoardName</a></text>)
+        )
+    </div>
+</div>

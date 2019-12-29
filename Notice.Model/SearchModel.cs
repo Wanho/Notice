@@ -22,7 +22,7 @@ namespace Notice.Model
 
         public string Title { set; get; }
 
-        public string UserId { set; get; }
+        public string CreateID { set; get; }
 
         public string Area { set; get; }
 

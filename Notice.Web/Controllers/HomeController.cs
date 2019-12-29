@@ -30,7 +30,7 @@ namespace Notice.Controllers
             logger.Warn("HomeController", "이건 경고");
 
             string protocol = Protocol.Http;
-
+            
             if (Protocol.Http.Value == "http")
             {
                 Console.Write("Test");
@@ -48,15 +48,15 @@ namespace Notice.Controllers
 
             //List<BoardBase> list = boardService.GetList();
 
-            searchModel = new BoardSearchModel();
-            searchModel.BoardCD = "418818";
-            searchModel.Title = "";
-            searchModel.PageNumber = 1;
-            searchModel.GetRange();
+            //searchModel = new BoardSearchModel();
+            //searchModel.BoardCD = "418818";
+            //searchModel.Title = "";
+            //searchModel.PageNumber = 1;
+            //searchModel.GetRange();
 
             //searchModel = boardService.GetQueryList(searchModel, true);
 
-            List<BoardModel> queryList = boardService.GetQueryList(searchModel);
+            //List<BoardModel> queryList = boardService.GetQueryList(searchModel);
              
             return View();
         }

@@ -74,7 +74,7 @@ namespace Notice.Data.Core
         public static readonly BoardSortType RowNum;
         public static readonly BoardSortType Ref_Seq;
         public static readonly BoardSortType Ref_Step;
-        public static readonly BoardSortType ArticleCD;
+        public static readonly BoardSortType ItemID;
         public static readonly BoardSortType OrderNumber;
         public static readonly BoardSortType Title;
         public static readonly BoardSortType ViewCnt;

@@ -12,7 +12,7 @@
     BoardSortType SortColumnType = (BoardSortType)Model.SortColumn;
 }
 <tr role="row">
-    <th style="width:100px" @(SortColumnType == BoardSortType.ArticleCD ? classSort : "class=sorting") aria-controls="dataTable" aria-title="@BoardSortType.ArticleCD" >글넘버</th>
+    <th style="width:100px" @(SortColumnType == BoardSortType.ItemID ? classSort : "class=sorting") aria-controls="dataTable" aria-title="@BoardSortType.ItemID" >글넘버</th>
     <th style="width:auto;" @(SortColumnType == BoardSortType.Title ? classSort : "class=sorting") aria-controls="dataTable" aria-title="@BoardSortType.Title">제목</th>
     <th style="width:150px" @(SortColumnType == BoardSortType.Company ? classSort : "class=sorting") aria-controls="dataTable" aria-title="@BoardSortType.Company">회사</th>
     <th style="width:100px" @(SortColumnType == BoardSortType.UserName ? classSort : "class=sorting") aria-controls="dataTable" aria-title="@BoardSortType.UserName">글쓴이</th>

@@ -34,7 +34,6 @@ namespace Notice.Controllers
         [HttpPost]
         public ActionResult Login(string userID, string password)
         {
-            
             if(userService.Verification(userID, password))
             {
                 FormsAuthentication.SetAuthCookie(userID, false);
@@ -45,27 +44,6 @@ namespace Notice.Controllers
             {
                 return Content("<script language='javascript' type='text/javascript'>alert('아이디 비밀번호를 확인해 주십시오.'); location.href = 'Login';</script>");
             }
-
-            //var user = userService.GetUser(userID, password);
-
-            ////var user = userService.GetUser(userID);
-
-            //if (user == null)
-            //{
-                
-            //}
-            //else
-            //{
-            //    // DB 에 사용자가 있고 Password 체크
-            //    if (password == "test")
-            //    {
-                    
-            //    }
-            //    else
-            //    {
-            //        return Content("<script language='javascript' type='text/javascript'>alert('아이디 비밀번호를 확인해 주십시오.');  location.href = 'Login';</script>");
-            //    }
-            //}
         }
 
         [Custom_Authorize(nameof(AuthType.None))]
@@ -89,7 +67,6 @@ namespace Notice.Controllers
 
             return new EmptyResult();
         }
-
 
         public ActionResult Main()
         {

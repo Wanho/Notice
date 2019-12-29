@@ -23,26 +23,35 @@ namespace Notice.Controllers
             boardService = new BoardService();
         }
 
+        public ActionResult BoardLeft()
+        {
+            return View(boardService.GetBoardInfos());
+        }
+
         [Custom_Authorize(nameof(AuthType.User))]
         public ActionResult Board(BoardSearchModel searchModel)
         {
-            searchModel.BoardCD = "418818";
+            searchModel.BoardID = "B5DF22B7-6827-4E06-B0FE-47746FAC70B9";
 
-            if (HttpContext.Request.Cookies["hPageSize"] == null) {
+            if (HttpContext.Request.Cookies["hPageSize"] == null)
+            {
                 searchModel.PageSize = 10;
             }
-            else {
+            else
+            {
                 searchModel.PageSize = Convert.ToInt32(HttpContext.Request.Cookies["hPageSize"].Value);
             }
 
-            List<BoardModel> queryList = boardService.GetQueryList(searchModel);
+            List<BoardItemModel> list = new List<BoardItemModel>();
+
+            list = boardService.GetBoardItems(searchModel);
 
             ContentBoardModel content = new ContentBoardModel()
             {
-                boardModel = queryList,
-                boardSearchModel = searchModel
+                boardItems = list,
+                boardSearch = searchModel
             };
-            
+           
             return View(content);
         }
 

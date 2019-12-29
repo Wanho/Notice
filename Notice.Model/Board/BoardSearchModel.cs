@@ -2,6 +2,6 @@
 {
     public class BoardSearchModel : SearchModel
     {
-        public string BoardCD { get; set; }
+        public string BoardID { get; set; }
     }
 }

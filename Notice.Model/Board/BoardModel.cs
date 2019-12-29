@@ -1,9 +1,84 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Notice.Model
 {
+    [Table("TB_BoardACL")]
+    public class BoardACLModel
+    {
+        [Key]
+        [Column(Order = 1)]
+        public string BoardID { get; set; }
+        [Key]
+        [Column(Order = 2)]
+        public string AccessID { get; set; }
+        public string AccessName { get; set; }
+        public string AccessLevel { get; set; }
+        public string ParentBoardID { get; set; }
+        public string IsAccess { get; set; }
+        public string IsView { get; set; }
+        public string IsWrite { get; set; }
+        public string IsReply { get; set; }
+        public string IsDelete { get; set; }
+    }
+
+    [Table("TB_BoardInfo")]
+    public class BoardInfoModel
+    {
+        [Key]
+        public string BoardID { get; set; }
+        public string BoardName { get; set; }
+        public string ParentBoardID { get; set; }
+        public string BoardDescription { get; set; }
+        public string AttachsizeLimit { get; set; }
+        public string BoardType { get; set; }
+
+        public virtual ICollection<BoardACLModel> BoardACLs { get; set; }
+
+        [ForeignKey("ParentBoardID")]
+        public virtual BoardInfoModel Parent { get; set; }
+        public virtual ICollection<BoardInfoModel> Childs { get; set; }
+    }
+
+    [Table("TB_BoardItem")]
+    public class BoardItemModel
+    {
+        [Key]
+        public string ItemID { get; set; }
+        public string BoardID { get; set; }
+        public string ParentItemID { get; set; }
+        public string Importance { get; set; }
+        public int ReadCount { get; set; }
+        public string Attachments { get; set; }
+        public string IsNotice { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public string CreateID { get; set; }
+        public string CreateName { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime UpdateDate { get; set; }
+
+        public virtual ICollection<BoardItemAttachModel> BoardItemAttaches { get; set; }
+    }
+
+    [Table("TB_BoardItemAttach")]
+    public class BoardItemAttachModel
+    {
+        [Key]
+        [Column(Order = 1)]
+        public string ItemID { get; set; }
+        [Key]
+        [Column(Order = 2)]
+        public string FileID { get; set; }
+        public string FilePath { get; set; }
+        public string FileSize { get; set; }
+        public string FileName { get; set; }
+    }
+
+    #region 주석
+    /*
     public class BoardModel
     {
         public int ArticleCD { get; set; }
@@ -77,6 +152,6 @@ namespace Notice.Model
         public string NickName { get; set; }
         public string SelReply { get; set; }
     }
-
-    
+    */
+    #endregion
 }

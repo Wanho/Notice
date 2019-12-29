@@ -13,14 +13,14 @@ namespace Notice.Web
     {
         protected HttpContextBase httpContext { set; get; }
         protected HttpCookie cookies { set; get; }
-        public User _user { get; set; }
+        public UserModel userModel { get; set; }
 
-        public UserState(HttpContextBase context, User user)
+        public UserState(HttpContextBase context, UserModel user)
         {
             if(user == null)
                 return;
 
-            _user = user;
+            userModel = user;
             httpContext = context;
             cookies = httpContext.Request.Cookies[Const.Name];
 
@@ -33,10 +33,10 @@ namespace Notice.Web
                 httpContext.Request.Cookies.Add(cookies);
             }
 
-            if (string.IsNullOrEmpty(_user.UserID)) return;
+            if (string.IsNullOrEmpty(userModel.UserID)) return;
         }
 
-        public static User LoadUser(string userId)
+        public static UserModel LoadUser(string userId)
         {
             UserService service = new UserService();
 
@@ -45,9 +45,9 @@ namespace Notice.Web
             return user;
         }
 
-        public static implicit operator User(UserState state)
+        public static implicit operator UserModel(UserState state)
         {
-            return state._user;
+            return state.userModel;
         }
 
         protected string GetCookie(string key, string defaultVal = null)

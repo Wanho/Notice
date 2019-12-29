@@ -8,7 +8,7 @@ namespace Notice.Web
 {
     public class ContentBoardModel
     {
-        public List<BoardModel> boardModel { get; set; }
-        public BoardSearchModel boardSearchModel { get; set; }
+        public List<BoardItemModel> boardItems { get; set; }
+        public BoardSearchModel boardSearch { get; set; }
     }
 }

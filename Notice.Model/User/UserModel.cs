@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Notice.Model
 {
     [Table("TB_User")]
-    public class User
+    public class UserModel
     {
         [Key]
         public string UserID { get; set; }
@@ -15,11 +15,5 @@ namespace Notice.Model
         public string PasswordSalt { get; set; }
         public DateTime CreateDate { get; set; }
         public string IsAdmin { get; set; } = Const.False;
-    }
-
-    public class UserModel
-    {
-           public string ID { get; set; }
-           public string password { get; set; }
     }
 }

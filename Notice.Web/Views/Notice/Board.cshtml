@@ -11,34 +11,34 @@
             <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                 <div class="row">
                     <form action="@Url.Action("Board", "Notice")" method="post" id="formBoard">
-                        @Html.Partial("EntityField", Model.boardSearchModel)
+                        @Html.Partial("EntityField", Model.boardSearch)
                     </form>
-                    @Html.Partial("BoardAction", Model.boardSearchModel)
+                    @Html.Partial("BoardAction", Model.boardSearch)
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
                         <table class="table table-bordered table-hover table-sm dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                             <thead class="thead-light">
-                                @Html.Partial("BoardHeader", Model.boardSearchModel)
+                                @Html.Partial("BoardHeader", Model.boardSearch)
                             </thead>
                             <tbody>
-                                @foreach (Notice.Model.BoardModel board in Model.boardModel)
+                                @foreach (Notice.Model.BoardItemModel board in Model.boardItems)
                                 {
 
                                     <tr role="row" class="odd">
-                                        <td class="ellipsis">@board.ArticleCD</td>
+                                        <td class="ellipsis">@board.ItemID</td>
                                         <td class="ellipsis">@board.Title</td>
-                                        <td class="ellipsis">@board.Company</td>
-                                        <td class="ellipsis">@board.UserName</td>
-                                        <td class="ellipsis">@board.UCreateDate</td>
-                                        <td class="ellipsis">@board.ViewCnt</td>
+                                        <td class="ellipsis">@board.CreateID</td>
+                                        <td class="ellipsis">@board.CreateName</td>
+                                        <td class="ellipsis">@board.CreateDate</td>
+                                        <td class="ellipsis">@board.ReadCount</td>
                                     </tr>
                                 }
                             </tbody>
                         </table>
                     </div>
                 </div>
-                @Html.Partial("PageNavigator", Model.boardSearchModel)
+                @Html.Partial("PageNavigator", Model.boardSearch)
             </div>
         </div>
     </div>

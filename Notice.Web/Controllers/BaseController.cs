@@ -55,7 +55,7 @@ namespace Notice.Controllers
             }
             else
             {
-                UserState = new UserState(filterContext.HttpContext, new User());
+                UserState = new UserState(filterContext.HttpContext, new UserModel());
             }
 
             //Text = new LanguageManager(UserState.Language);
