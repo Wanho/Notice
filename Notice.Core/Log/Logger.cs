@@ -172,8 +172,6 @@ namespace Notice.Core
 						{
 							this.WriteFile(value, str, sb);
 						}
-						
-						this.WriteDefault(logEntity);
 					}
 				}
 			}
@@ -184,11 +182,6 @@ namespace Notice.Core
 
 		private void WriteConsole(StringBuilder text)
 		{
-		}
-
-		private void WriteDefault(LogEntity logEntity)
-		{
-			LogManager.logService.Create(logEntity);
 		}
 
 		private void WriteFile(LogSetting setting, string key, StringBuilder text)
