@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -12,7 +11,7 @@ namespace Notice.Core
     {
         public static void Initilize(IEnumerable<Assembly> assemblies, long startSeq, Dictionary<string, string> initParam)
         {
-            CodeFileType.AddRoot("Custom_FileRoot", "/FileRoot/", initParam["FileRoot"]);
+            FileTypeCode.AddRoot("FileRoot", "/FileRoot/", initParam["FileRoot"]);
 
             InitializeBaseCode.Initialize(assemblies, startSeq);
         }

@@ -1,8 +1,8 @@
-﻿using Notice.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Notice.Model;
 
 namespace Notice.Web
 {

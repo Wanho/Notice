@@ -1,4 +1,5 @@
-﻿@model ContentBoardModel
+﻿@using Notice.Model
+@model ContentBoardModel
 @{
     ViewBag.Header = "공지사항";
     ViewBag.HeaderDesc = "리스트 샘플";
@@ -22,11 +23,11 @@
                                 @Html.Partial("BoardHeader", Model.boardSearch)
                             </thead>
                             <tbody>
-                                @foreach (Notice.Model.BoardItemModel board in Model.boardItems)
+                                @foreach (BoardItemModel board in Model.boardItems)
                                 {
 
-                                    <tr role="row" class="odd">
-                                        <td class="ellipsis">@board.ItemID</td>
+                                    <tr role="row" class="odd" data-boardID="@board.ItemID">
+                                        <td class="ellipsis"></td>
                                         <td class="ellipsis">@board.Title</td>
                                         <td class="ellipsis">@board.CreateID</td>
                                         <td class="ellipsis">@board.CreateName</td>

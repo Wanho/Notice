@@ -48,23 +48,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AES.cs" />
-    <Compile Include="Ariibute\Custom_AuthorizeAttribute.cs" />
-    <Compile Include="Ariibute\Custom_HideAttribute.cs" />
+    <Compile Include="Ariibute\OrderAttribute.cs" />
+    <Compile Include="Ariibute\CodeTypeAttribute.cs" />
+    <Compile Include="Ariibute\HideAttribute.cs" />
     <Compile Include="Code.cs" />
     <Compile Include="Const.cs" />
+    <Compile Include="Ariibute\CodeNameAttribute.cs" />
     <Compile Include="Extension\DictionaryExtension.cs" />
-    <Compile Include="Extension\System\Custom_SystemExtension.cs" />
+    <Compile Include="Extension\SystemExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Notice.Core\Notice.Core.csproj">
-      <Project>{2cd382cb-718a-44c3-aadd-fb4a1f16dee8}</Project>
-      <Name>Notice.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Notice.Data\Notice.Data.csproj">
-      <Project>{19eda57e-6bf4-4d7b-9fd0-3349a641c6af}</Project>
-      <Name>Notice.Data</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

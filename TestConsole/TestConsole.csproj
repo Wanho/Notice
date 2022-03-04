@@ -67,10 +67,6 @@
       <Project>{ec4211f5-8eed-4834-8c80-678a35e3af56}</Project>
       <Name>Notice.Data.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Notice.Data\Notice.Data.csproj">
-      <Project>{19eda57e-6bf4-4d7b-9fd0-3349a641c6af}</Project>
-      <Name>Notice.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Notice.Model\Notice.Model.csproj">
       <Project>{2d8147aa-27c0-44c8-b0f2-b1f122ea34eb}</Project>
       <Name>Notice.Model</Name>

@@ -19,13 +19,12 @@ namespace System
         }
     }
 
-    [Custom_NotInitType]
+    [NotInitType]
     public abstract class BaseCode<T> : BaseCode where T : BaseCode<T>
     {
         public readonly static T Nothing;
         internal static T Default;
-        protected Custom_CodeAttribute attribute;
-        private static ILog logger;
+        protected CodeAttribute attribute;
 
         protected readonly static BaseCode<T>.CodeSetting<T> setting;
 
@@ -40,7 +39,6 @@ namespace System
         {
             BaseCode<T>.Default = default(T);
             BaseCode<T>.CodeGroups = new Dictionary<string, List<T>>();
-            BaseCode<T>.logger = LogManager.GetLogger("Notice.Code");
             BaseCode<T>.setting = new BaseCode<T>.CodeSetting<T>();
         }
 
@@ -62,7 +60,6 @@ namespace System
             object value;
             BaseCode<T>.setting.Tick = BaseCode.start;
             Type type = typeof(T);
-            BaseCode<T>.logger.Debug(string.Concat("Load ", type.FullName), (LogInfo)null, null);
             List<T> tCodes = new List<T>();
             int order = 0;
             foreach (FieldInfo runtimeField in type.GetRuntimeFields())
@@ -75,15 +72,15 @@ namespace System
                 name.Name = runtimeField.Name;
                 runtimeField.SetValue(null, name);
                 tCodes.Add(name);
-                Custom_CodeAttribute customAttr = runtimeField.GetCustomAttribute<Custom_CodeAttribute>();
-                Custom_CodeGroupAttribute codeGroupAttribute = runtimeField.GetCustomAttribute<Custom_CodeGroupAttribute>();
-                List<Custom_CodeDataAttribute> list = runtimeField.GetCustomAttributes<Custom_CodeDataAttribute>().ToList<Custom_CodeDataAttribute>();
-                name.attribute = customAttr;
-                if (customAttr != null) {
-                    if (customAttr.Order >= 0) {
-                        order = customAttr.Order;
+                CodeAttribute attr = runtimeField.GetCustomAttribute<CodeAttribute>();
+                CodeGroupAttribute codeGroupAttribute = runtimeField.GetCustomAttribute<CodeGroupAttribute>();
+                List<CodeDataAttribute> list = runtimeField.GetCustomAttributes<CodeDataAttribute>().ToList<CodeDataAttribute>();
+                name.attribute = attr;
+                if (attr != null) {
+                    if (attr.Order >= 0) {
+                        order = attr.Order;
                     }
-                    name.Groups = customAttr.Group;
+                    name.Groups = attr.Group;
                 }
                 if (codeGroupAttribute != null) {
                     name.Groups = codeGroupAttribute.Group;
@@ -101,7 +98,7 @@ namespace System
                 if (list.Count > 0)
                 {
                     name.Data = new Dictionary<string, string>();
-                    foreach (Custom_CodeDataAttribute codeDataAttribute in list)
+                    foreach (CodeDataAttribute codeDataAttribute in list)
                     {
                         name.Data.Add(codeDataAttribute.Name, codeDataAttribute.Value);
                     }
@@ -112,9 +109,9 @@ namespace System
                 if ((object)name is ICode)
                 {
                     ICode code = (object)name as ICode;
-                    if (customAttr != null)
+                    if (attr != null)
                     {
-                        value = customAttr.Value;
+                        value = attr.Value;
                     }
                     else
                     {
@@ -128,30 +125,30 @@ namespace System
                 }
                 else if ((object)name is INumericCode)
                 {
-                    ((object)name as INumericCode).Value = (customAttr != null ? customAttr.NumericValue : name.Order);
+                    ((object)name as INumericCode).Value = (attr != null ? attr.NumericValue : name.Order);
                 }
-                if (type.GetTypeInfo().BaseType.FullName.IndexOf("CodeFileType") >= 0)
+                if (type.GetTypeInfo().BaseType.FullName.IndexOf("FileTypeCode") >= 0)
                 {
-                    Custom_FileRootAttribute fileRootAttribute = runtimeField.GetCustomAttribute<Custom_FileRootAttribute>();
+                    FileRootAttribute fileRootAttribute = runtimeField.GetCustomAttribute<FileRootAttribute>();
                     if (fileRootAttribute == null)
                     {
-                        fileRootAttribute = runtimeField.DeclaringType.GetTypeInfo().GetCustomAttribute<Custom_FileRootAttribute>();
+                        fileRootAttribute = runtimeField.DeclaringType.GetTypeInfo().GetCustomAttribute<FileRootAttribute>();
                         if (fileRootAttribute != null)
                         {
                             PropertyInfo property = type.GetProperty("RootPath");
-                            if (!CodeFileType.fileRoots.ContainsKey(fileRootAttribute.Name))
+                            if (!FileTypeCode.fileRoots.ContainsKey(fileRootAttribute.Name))
                             {
                                 throw new Exception(string.Concat(fileRootAttribute.Name, ": not exist root config"));
                             }
-                            property.SetValue(name, CodeFileType.fileRoots[fileRootAttribute.Name]);
+                            property.SetValue(name, FileTypeCode.fileRoots[fileRootAttribute.Name]);
                         }
                         else
                         {
-                            BaseCode<T>.logger.Warn(string.Concat(runtimeField.Name, "not exist root attribute"), (LogInfo)null, null);
+                            // BaseCode<T>.logger.Warn(string.Concat(runtimeField.Name, "not exist root attribute"), (LogInfo)null, null);
                         }
                     }
                 }
-                if (BaseCode<T>.Default == null || runtimeField.GetCustomAttribute<Custom_DefaultCodeAttribute>() == null)
+                if (BaseCode<T>.Default == null || runtimeField.GetCustomAttribute<DefaultCodeAttribute>() == null)
                 {
                     continue;
                 }

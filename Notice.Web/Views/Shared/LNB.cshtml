@@ -1,13 +1,14 @@
-﻿@{
-    var userState = ViewData["_User"] as UserState;
+﻿@using Notice.Model
+@{
+    var userModel = ViewData["_User"] as UserModel;
     string action = ViewContext.RouteData.Values["controller"] as string;
     string view = ViewContext.RouteData.Values["action"] as string;
 
     string isSiderbar = "";
-    if (ViewContext.HttpContext.Request.Cookies["IsSidebar"] != null)
-    {
-        isSiderbar = ViewContext.HttpContext.Request.Cookies["IsSidebar"].Value;
-    }
+    //if (ViewContext.HttpContext.Request.Cookies["IsSidebar"] != null)
+    //{
+    //    isSiderbar = ViewContext.HttpContext.Request.Cookies["IsSidebar"].Value;
+    //}
 }
 
 <script>
@@ -21,7 +22,7 @@
 
 <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion @isSiderbar" id="accordionSidebar">
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/index.html">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
         <div class="sidebar-brand-icon">
             <i class="fas fa-window-restore"></i>
         </div>
@@ -33,7 +34,7 @@
     <li class="nav-item">
         <a class="nav-link" href="@Url.Action("Logout", "Frame")">
             <i class="fas fa-sign-out-alt"></i>
-            <span>@userState.userModel.UserName</span>
+            <span>@userModel.UserName</span>
         </a>
     </li>
 

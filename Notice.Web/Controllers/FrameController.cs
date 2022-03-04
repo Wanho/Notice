@@ -1,12 +1,12 @@
 ﻿using Notice.Data.Core;
-using Notice.Model;
 using Notice.Service;
+using Notice.Model;
 using System.Web.Mvc;
 using System.Web.Security;
+using log4net;
 
 namespace Notice.Controllers
 {
-    [Custom_Authorize]
     public class FrameController : BaseController
     {
         UserService userService;
@@ -16,7 +16,6 @@ namespace Notice.Controllers
             userService = new UserService();
         }
 
-        [Custom_Authorize(nameof(AuthType.None))]
         [HttpGet]
         public ActionResult Login()
         {
@@ -30,7 +29,6 @@ namespace Notice.Controllers
             }
         }
 
-        [Custom_Authorize(nameof(AuthType.None))]
         [HttpPost]
         public ActionResult Login(string userID, string password)
         {
@@ -46,7 +44,6 @@ namespace Notice.Controllers
             }
         }
 
-        [Custom_Authorize(nameof(AuthType.None))]
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
@@ -69,6 +66,11 @@ namespace Notice.Controllers
         }
 
         public ActionResult Main()
+        {
+            return View();
+        }
+
+        public ActionResult Index()
         {
             return View();
         }

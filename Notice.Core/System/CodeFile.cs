@@ -4,22 +4,22 @@ using System.Reflection;
 
 namespace System
 {
-    public class CodeFileType
+    public class FileTypeCode
     {
         internal static Dictionary<string, WebPath> fileRoots;
 
-        static CodeFileType()
+        static FileTypeCode()
         {
-            CodeFileType.fileRoots = new Dictionary<string, WebPath>();
+            FileTypeCode.fileRoots = new Dictionary<string, WebPath>();
         }
 
-        public CodeFileType()
+        public FileTypeCode()
         {
         }
 
         public static void AddRoot(string name, string absolutePath, string path)
         {
-            CodeFileType.fileRoots.Add(name, new WebPath()
+            FileTypeCode.fileRoots.Add(name, new WebPath()
             {
                 AbsolutePath = absolutePath,
                 Path = path
@@ -28,8 +28,8 @@ namespace System
 
         public static WebPath FromAbsolutePath(string absolutePath)
         {
-            WebPath webPath;
-            Dictionary<string, WebPath>.ValueCollection.Enumerator enumerator = CodeFileType.fileRoots.Values.GetEnumerator();
+            WebPath webPath = new WebPath();
+            Dictionary<string, WebPath>.ValueCollection.Enumerator enumerator = FileTypeCode.fileRoots.Values.GetEnumerator();
             try
             {
                 while (enumerator.MoveNext())
@@ -46,35 +46,39 @@ namespace System
                         Path = string.Concat(current.Path.TrimEnd(new char[] { '\\' }), absolutePath.Replace("/", "\\"))
                     };
                     webPath = webPath1;
-                    return webPath;
+                    break;
                 }
+            }
+            catch
+            {
                 throw new Exception("can not found root in fileroots");
             }
             finally
             {
                 ((IDisposable)enumerator).Dispose();
             }
+
             return webPath;
         }
     }
 
-    [Custom_NotInitType]
-    public class CodeFileType<T> : BaseCode<T>, ICode where T : CodeFileType<T>, new()
+    [NotInitType]
+    public class FileTypeCode<T> : BaseCode<T>, ICode where T : FileTypeCode<T>, new()
     {
         public WebPath RootPath { get; internal set; }
         public string Value { get; set; }
 
-        protected CodeFileType()
+        protected FileTypeCode()
         {
         }
 
-        public static CodeFileType<T> FindCode(object value)
+        public static FileTypeCode<T> FindCode(object value)
         {
             string str = value as string;
             return BaseCode<T>.Codes.Find((T p) => p.Value.Equals(str, StringComparison.OrdinalIgnoreCase));
         }
 
-        public static CodeFileType<T> FindCode_(string str)
+        public static FileTypeCode<T> FindCode_(string str)
         {
             return BaseCode<T>.Codes.Find((T p) => p.Value.Equals(str, StringComparison.OrdinalIgnoreCase));
         }
@@ -110,21 +114,21 @@ namespace System
         {
             string empty = string.Empty;
             string value = this.Value;
-            Custom_CodeFileTypeAttribute customAttribute = base.GetType().GetField(base.Name).GetCustomAttribute<Custom_CodeFileTypeAttribute>();
-            if (customAttribute != null)
+            FileTypeCodeAttribute attribute = base.GetType().GetField(base.Name).GetCustomAttribute<FileTypeCodeAttribute>();
+            if (attribute != null)
             {
-                if (!string.IsNullOrEmpty(customAttribute.DateFormat))
+                if (!string.IsNullOrEmpty(attribute.DateFormat))
                 {
                     if (!dt.HasValue)
                     {
                         throw new Exception(string.Concat(base.Name, " needs DateTime"));
                     }
                     DateTime dateTime = dt.Value;
-                    empty = string.Concat(dateTime.ToString(customAttribute.DateFormat), "/");
+                    empty = string.Concat(dateTime.ToString(attribute.DateFormat), "/");
                 }
-                if (!string.IsNullOrEmpty(customAttribute.DirectoryName))
+                if (!string.IsNullOrEmpty(attribute.DirectoryName))
                 {
-                    value = customAttribute.DirectoryName;
+                    value = attribute.DirectoryName;
                 }
             }
             if (fileName != null && fileName.StartsWith("/")) {
@@ -139,12 +143,12 @@ namespace System
             return webPath;
         }
 
-        public static explicit operator CodeFileType<T>(string value)
+        public static explicit operator FileTypeCode<T>(string value)
         {
             return BaseCode<T>.Codes.Find((T p) => p.Value.Equals(value, StringComparison.OrdinalIgnoreCase));
         }
 
-        public static explicit operator String(CodeFileType<T> code)
+        public static explicit operator String(FileTypeCode<T> code)
         {
             return code.Value;
         }

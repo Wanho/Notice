@@ -1,9 +1,4 @@
-﻿using Notice.Data.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace Notice.Model
 {
@@ -32,6 +27,6 @@ namespace Notice.Model
 
         public string SortOrder { set; get; }
         public string SortColumn { set; get; }
-        public string SortType { set; get; } = BoardSortType.SortCreateDate.Value;
+        public string SortType { set; get; }
     }
 }

@@ -686,23 +686,5 @@ namespace Notice.Data.Core
 
             return result ? PasswordVerificationResult.Success : PasswordVerificationResult.Failed;
         }
-
-        //private static byte[] ComputeHash(string password)
-        //{
-        //    using (MemoryStream ms = new MemoryStream())
-        //    using (StreamWriter sw = new StreamWriter(ms))
-        //    {
-        //        sw.Write(password);
-        //        sw.Flush();
-        //        ms.Position = 0;
-
-        //        using (SHA256CryptoServiceProvider provider = new SHA256CryptoServiceProvider())
-        //            return provider.ComputeHash(ms);
-        //    }
-        //}
-
-        
-
-       
     }
 }

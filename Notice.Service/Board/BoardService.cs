@@ -1,53 +1,25 @@
-﻿using Notice.Data;
-using Notice.Data.Core;
-using Notice.Model;
-using System;
+﻿using Notice.Model;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
-using System.Data.Entity;
 using System.Data.SqlClient;
+using Dapper;
 using System.Linq;
 
 namespace Notice.Service
 {
     public class BoardService
     {
-        public class BoradDbContext : DbContext
-        {
-            public BoradDbContext() : base("name=DefaultConnection")
-            {
-                Database.SetInitializer<DataContext>(null);
-
-                Configuration.LazyLoadingEnabled = false;
-                Configuration.ProxyCreationEnabled = false;
-
-                //Show SQL in Output Debug window.
-                this.Database.Log = s =>
-                {
-                    System.Diagnostics.Debug.Write(s);
-                    System.Diagnostics.Trace.Write(s);
-                    Console.WriteLine(s);
-                };
-
-            }
-
-            public DbSet<BoardACLModel> boardACLs { get; set; }
-            public DbSet<BoardInfoModel> boardInfos { get; set; }
-            public DbSet<BoardItemModel> boardItems { get; set; }
-            public DbSet<BoardItemAttachModel> boardItemAttachs { get; set; }
-        }
-
-        BoradDbContext dbContext;
-
-        public BoardService()
-        {
-            dbContext = new BoradDbContext();
-        }
+        private string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString();
 
         public List<BoardInfoModel> GetBoardInfos()
         {
-            List<BoardInfoModel> list = dbContext.boardInfos.ToList();
-
+            List<BoardInfoModel> list = new List<BoardInfoModel>(); // dbContext.boardInfos.ToList();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var procedure = "[SP_BoardGetInfos]";
+                list = connection.Query<BoardInfoModel>(procedure, null, commandType: CommandType.StoredProcedure).ToList();
+            }
             return list;
         }
 
@@ -61,16 +33,16 @@ namespace Notice.Service
                 {
                     if (searchModel.Area == "Title")
                     {
-                        searchModel.TotalCount = dbContext.boardItems.Where(x => x.BoardID == searchModel.BoardID && x.Title.Contains(searchModel.Word)).LongCount();
+                        searchModel.TotalCount = 0; // dbContext.boardItems.Where(x => x.BoardID == searchModel.BoardID && x.Title.Contains(searchModel.Word)).LongCount();
                     }
                     else if(searchModel.Area == "CreateName")
                     {
-                        searchModel.TotalCount = dbContext.boardItems.Where(x => x.BoardID == searchModel.BoardID && x.CreateName.Contains(searchModel.Word)).LongCount();
+                        searchModel.TotalCount = 0; //dbContext.boardItems.Where(x => x.BoardID == searchModel.BoardID && x.CreateName.Contains(searchModel.Word)).LongCount();
                     }
                 }
                 else
                 {
-                    searchModel.TotalCount = dbContext.boardItems.Where(x => x.BoardID == searchModel.BoardID).LongCount();
+                    searchModel.TotalCount = 0; //dbContext.boardItems.Where(x => x.BoardID == searchModel.BoardID).LongCount();
                 }
             }
 
@@ -78,31 +50,31 @@ namespace Notice.Service
             {
                 if (searchModel.Area == "Title")
                 {
-                    list = dbContext.boardItems.
+                    list = new List<BoardItemModel>(); /* dbContext.boardItems.
                         Where(x => x.BoardID == searchModel.BoardID && x.Title.Contains(searchModel.Word))
                         .OrderBy(x => x.CreateDate)
                         .Skip(searchModel.GetRange().RowStart)
                         .Take(searchModel.GetRange().RowEnd)
-                        .ToList<BoardItemModel>();
+                        .ToList<BoardItemModel>(); */
                 }
                 else if (searchModel.Area == "CreateName")
                 {
-                    list = dbContext.boardItems
+                    list = new List<BoardItemModel>(); /* dbContext.boardItems
                         .Where(x => x.BoardID == searchModel.BoardID && x.CreateName.Contains(searchModel.Word))
                         .OrderBy(x => x.CreateDate)
                         .Skip(searchModel.GetRange().RowStart)
                         .Take(searchModel.GetRange().RowEnd)
-                        .ToList<BoardItemModel>();
+                        .ToList<BoardItemModel>(); */
                 }
             }
             else
             {
-                list = dbContext.boardItems
+                list = new List<BoardItemModel>(); /* dbContext.boardItems
                     .Where(x => x.BoardID == searchModel.BoardID)
                     .OrderBy(x=> x.CreateDate)
                     .Skip(searchModel.GetRange().RowStart)
                     .Take(searchModel.GetRange().RowEnd)
-                    .ToList<BoardItemModel>();
+                    .ToList<BoardItemModel>(); */
             }
 
             return list;
@@ -198,40 +170,40 @@ namespace Notice.Service
         {
             if (!string.IsNullOrEmpty(searchModel.SortColumn))
             {
-                if (searchModel.SortColumn == BoardSortType.ItemID)
+                if (searchModel.SortColumn == "ItemID")
                 {
-                    strSql = strSql.Replace("%{SortColumn}", BoardSortType.ItemID);
+                    strSql = strSql.Replace("%{SortColumn}", "ItemID");
                 }
-                else if (searchModel.SortColumn == BoardSortType.Company)
+                else if (searchModel.SortColumn == "Company")
                 {
-                    strSql = strSql.Replace("%{SortColumn}", BoardSortType.Company);
+                    strSql = strSql.Replace("%{SortColumn}", "Company");
                 }
-                else if (searchModel.SortColumn == BoardSortType.Title)
+                else if (searchModel.SortColumn == "Title")
                 {
-                    strSql = strSql.Replace("%{SortColumn}", BoardSortType.Title);
+                    strSql = strSql.Replace("%{SortColumn}", "Title");
                 }
-                else if (searchModel.SortColumn == BoardSortType.UserName)
+                else if (searchModel.SortColumn == "UserName")
                 {
-                    strSql = strSql.Replace("%{SortColumn}", BoardSortType.UserName);
+                    strSql = strSql.Replace("%{SortColumn}", "UserName");
                 }
-                else if (searchModel.SortColumn == BoardSortType.ViewCnt)
+                else if (searchModel.SortColumn == "ViewCnt")
                 {
-                    strSql = strSql.Replace("%{SortColumn}", BoardSortType.ViewCnt);
+                    strSql = strSql.Replace("%{SortColumn}", "ViewCnt");
                 }
-                else if (searchModel.SortColumn == BoardSortType.SortCreateDate)
+                else if (searchModel.SortColumn == "SortCreateDate")
                 {
-                    strSql = strSql.Replace("%{SortColumn}", BoardSortType.SortCreateDate);
+                    strSql = strSql.Replace("%{SortColumn}", "SortCreateDate");
                 }
             }
             else
             {
 
-                searchModel.SortColumn = BoardSortType.SortCreateDate;
+                searchModel.SortColumn = "SortCreateDate";
                 strSql = strSql.Replace("%{SortColumn}", searchModel.SortType);
             }
 
             if (string.IsNullOrEmpty(searchModel.SortOrder))
-                searchModel.SortOrder = Data.Core.SortOrder.Desc.Value;
+                searchModel.SortOrder = "Desc";
 
             strSql = strSql.Replace("%{SortOrder}", searchModel.SortOrder);
 

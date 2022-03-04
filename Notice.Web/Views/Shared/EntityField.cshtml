@@ -1,4 +1,4 @@
-﻿@model object
+﻿@*@model object*@
 @{
     string prefix = ViewData["Prefix"] as string;
 
@@ -9,7 +9,7 @@
             continue;
         }
 
-        var attr = property.GetCustomAttributes(typeof(Notice.Data.Core.Custom_HideAttribute), false);
+        var attr = property.GetCustomAttributes(typeof(HideAttribute), false);
         if (attr.Length > 0)
         {
             continue;

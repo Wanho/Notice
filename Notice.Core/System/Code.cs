@@ -9,7 +9,7 @@ namespace System
     public interface ICode { string Value { get; set; } }
     public interface INumericCode { int Value { get; set; } }
 
-    [Custom_NotInitType]
+    [NotInitType]
     public abstract class Code<T> : BaseCode<T>, ICode where T : Code<T>
     {
         public string Value { get; set; }

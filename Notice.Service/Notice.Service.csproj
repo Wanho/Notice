@@ -37,21 +37,12 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
-    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
-    </Reference>
-    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.123\lib\net461\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -61,26 +52,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\PagedList.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Board\BoardRepository.cs" />
     <Compile Include="Board\BoardService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Notice.Core\Notice.Core.csproj">
-      <Project>{2cd382cb-718a-44c3-aadd-fb4a1f16dee8}</Project>
-      <Name>Notice.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Notice.Data.Core\Notice.Data.Core.csproj">
       <Project>{ec4211f5-8eed-4834-8c80-678a35e3af56}</Project>
       <Name>Notice.Data.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Notice.Data\Notice.Data.csproj">
-      <Project>{19eda57e-6bf4-4d7b-9fd0-3349a641c6af}</Project>
-      <Name>Notice.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Notice.Model\Notice.Model.csproj">
       <Project>{2d8147aa-27c0-44c8-b0f2-b1f122ea34eb}</Project>

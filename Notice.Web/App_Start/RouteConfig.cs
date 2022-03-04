@@ -16,14 +16,7 @@ namespace Notice.Web
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Frame", id = UrlParameter.Optional },
-                namespaces: new string[] { "Notice.Controllers" }
-            );
-
-            routes.MapRoute(
-                name: "Frame",
-                url: "{action}",
-                defaults: new { controller = "Frame" },
+                defaults: new { controller = "Frame", action = "Index", id = UrlParameter.Optional },
                 namespaces: new string[] { "Notice.Controllers" }
             );
         }

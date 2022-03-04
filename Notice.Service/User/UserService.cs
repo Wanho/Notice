@@ -1,47 +1,49 @@
-﻿using Notice.Data;
+﻿using Dapper;
 using Notice.Data.Core;
-using Notice.Model;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Notice.Model;
 
 namespace Notice.Service
 {
     public class UserService
     {
-        public class UserDbContext : DbContext
+        private string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString();
+
+        public string GetByPasswordHash(string userID)
         {
-            public UserDbContext() : base("name=DefaultConnection")
+            string passwordHash = "";
+            using (var connection = new SqlConnection(connectionString))
             {
-                Database.SetInitializer<DataContext>(null);
+                var procedure = "[SP_UserGetByPasswordHash]";
+                var values = new { UserID = userID };
+
+                passwordHash = connection.QuerySingle<string>(procedure, values, commandType: CommandType.StoredProcedure);
             }
-
-            public DbSet<UserModel> Users { get; set; }
+            return passwordHash;
         }
 
-        UserDbContext dbContext;
-
-        public UserService()
+        public UserModel GetUser(string userID)
         {
-            dbContext = new UserDbContext();
-        }
+            UserModel userModel = new UserModel();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var procedure = "[SP_UserGetInfo]";
+                var values = new { UserID = userID };
 
-        public UserModel GetById(string userID)
-        {
-            return dbContext.Users.Find(userID);
+                userModel = connection.QuerySingle<UserModel>(procedure, values, commandType: CommandType.StoredProcedure);
+            }
+            return userModel;
         }
 
         public bool Verification(string userID, string password)
         {
-            UserModel user = GetById(userID);
+            string passwordHash = GetByPasswordHash(userID);
 
-            if(user != null)
+            if(!string.IsNullOrEmpty(passwordHash))
             {
-                var result = HashWithSlat.VerifyHashedPassword(user.PasswordHash, password);
+                var result = HashWithSlat.VerifyHashedPassword(passwordHash, password);
                 if (result == PasswordVerificationResult.Success)
                     return true;
                 else
@@ -53,7 +55,7 @@ namespace Notice.Service
             }
         }
 
-        public void CreateUser(UserModel user)
+        public void CreateUser(UserModel userModel)
         {
 
         }
