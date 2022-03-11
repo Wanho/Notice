@@ -27,55 +27,74 @@ namespace Notice.Service
         {
             List<BoardItemModel> list = new List<BoardItemModel>();
 
-            if (totalCount)
+            using (var connection = new SqlConnection(connectionString))
             {
-                if (!string.IsNullOrEmpty(searchModel.Area))
+                var procedure = "[SP_BoardGetItems]";
+                var values = new {
+                    BoardID = searchModel.BoardID,
+                    Area       = searchModel.Area,
+                    Word       = searchModel.Word,
+                    RowStart   = searchModel.GetRange().RowStart,
+                    RowEnd     = searchModel.GetRange().RowEnd
+                };
+
+                var reader = connection.QueryMultiple(procedure, values, commandType: CommandType.StoredProcedure);
+                using (reader) 
                 {
-                    if (searchModel.Area == "Title")
-                    {
-                        searchModel.TotalCount = 0; // dbContext.boardItems.Where(x => x.BoardID == searchModel.BoardID && x.Title.Contains(searchModel.Word)).LongCount();
-                    }
-                    else if(searchModel.Area == "CreateName")
-                    {
-                        searchModel.TotalCount = 0; //dbContext.boardItems.Where(x => x.BoardID == searchModel.BoardID && x.CreateName.Contains(searchModel.Word)).LongCount();
-                    }
-                }
-                else
-                {
-                    searchModel.TotalCount = 0; //dbContext.boardItems.Where(x => x.BoardID == searchModel.BoardID).LongCount();
+                    searchModel.TotalCount = reader.ReadFirstOrDefault<long>(); 
+                    list = reader.Read<BoardItemModel>().ToList(); 
                 }
             }
 
-            if (!string.IsNullOrEmpty(searchModel.Area))
-            {
-                if (searchModel.Area == "Title")
-                {
-                    list = new List<BoardItemModel>(); /* dbContext.boardItems.
-                        Where(x => x.BoardID == searchModel.BoardID && x.Title.Contains(searchModel.Word))
-                        .OrderBy(x => x.CreateDate)
-                        .Skip(searchModel.GetRange().RowStart)
-                        .Take(searchModel.GetRange().RowEnd)
-                        .ToList<BoardItemModel>(); */
-                }
-                else if (searchModel.Area == "CreateName")
-                {
-                    list = new List<BoardItemModel>(); /* dbContext.boardItems
-                        .Where(x => x.BoardID == searchModel.BoardID && x.CreateName.Contains(searchModel.Word))
-                        .OrderBy(x => x.CreateDate)
-                        .Skip(searchModel.GetRange().RowStart)
-                        .Take(searchModel.GetRange().RowEnd)
-                        .ToList<BoardItemModel>(); */
-                }
-            }
-            else
-            {
-                list = new List<BoardItemModel>(); /* dbContext.boardItems
-                    .Where(x => x.BoardID == searchModel.BoardID)
-                    .OrderBy(x=> x.CreateDate)
-                    .Skip(searchModel.GetRange().RowStart)
-                    .Take(searchModel.GetRange().RowEnd)
-                    .ToList<BoardItemModel>(); */
-            }
+            //if (totalCount)
+            //{
+            //    if (!string.IsNullOrEmpty(searchModel.Area))
+            //    {
+            //        if (searchModel.Area == "Title")
+            //        {
+            //            searchModel.TotalCount = 0; // dbContext.boardItems.Where(x => x.BoardID == searchModel.BoardID && x.Title.Contains(searchModel.Word)).LongCount();
+            //        }
+            //        else if(searchModel.Area == "CreateName")
+            //        {
+            //            searchModel.TotalCount = 0; //dbContext.boardItems.Where(x => x.BoardID == searchModel.BoardID && x.CreateName.Contains(searchModel.Word)).LongCount();
+            //        }
+            //    }
+            //    else
+            //    {
+            //        searchModel.TotalCount = 0; //dbContext.boardItems.Where(x => x.BoardID == searchModel.BoardID).LongCount();
+            //    }
+            //}
+
+            //if (!string.IsNullOrEmpty(searchModel.Area))
+            //{
+            //    if (searchModel.Area == "Title")
+            //    {
+            //        list = new List<BoardItemModel>(); /* dbContext.boardItems.
+            //            Where(x => x.BoardID == searchModel.BoardID && x.Title.Contains(searchModel.Word))
+            //            .OrderBy(x => x.CreateDate)
+            //            .Skip(searchModel.GetRange().RowStart)
+            //            .Take(searchModel.GetRange().RowEnd)
+            //            .ToList<BoardItemModel>(); */
+            //    }
+            //    else if (searchModel.Area == "CreateName")
+            //    {
+            //        list = new List<BoardItemModel>(); /* dbContext.boardItems
+            //            .Where(x => x.BoardID == searchModel.BoardID && x.CreateName.Contains(searchModel.Word))
+            //            .OrderBy(x => x.CreateDate)
+            //            .Skip(searchModel.GetRange().RowStart)
+            //            .Take(searchModel.GetRange().RowEnd)
+            //            .ToList<BoardItemModel>(); */
+            //    }
+            //}
+            //else
+            //{
+            //    list = new List<BoardItemModel>(); /* dbContext.boardItems
+            //        .Where(x => x.BoardID == searchModel.BoardID)
+            //        .OrderBy(x=> x.CreateDate)
+            //        .Skip(searchModel.GetRange().RowStart)
+            //        .Take(searchModel.GetRange().RowEnd)
+            //        .ToList<BoardItemModel>(); */
+            //}
 
             return list;
         }

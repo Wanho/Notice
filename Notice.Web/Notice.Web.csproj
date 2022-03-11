@@ -135,6 +135,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Helpers\HtmlHelperExtension.cs" />
     <Compile Include="App_Help\HideAttribute.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -186,6 +187,7 @@
     <Content Include="log4net.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="ReadMe.txt" />
     <Content Include="Scripts\BootStrap\Theme\sb-admin-2.js" />
     <Content Include="Content\Bootstrap\Theme\sb-admin-2.min.css" />
     <Content Include="Scripts\BootStrap\Theme\sb-admin-2.min.js" />
