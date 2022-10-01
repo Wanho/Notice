@@ -1,5 +1,5 @@
-﻿@using Notice.Model
-@model ContentBoardModel
+﻿@model ContentBoardModel
+@using Notice.Model
 @{
     ViewBag.Header = "공지사항";
     ViewBag.HeaderDesc = "리스트 샘플";
@@ -18,17 +18,22 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        @Model.boardItems.HtmlListTest("Title")
                         <table class="table table-bordered table-hover table-sm dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                             <thead class="thead-light">
-                                @Html.Partial("BoardHeader", Model.boardSearch)
+                                <tr role="row">
+                                    <th style="width:100px" @Model.HtmlSortClass("ItemID", Model.boardSearch.SortOrder)>글넘버</th>
+                                    <th style="width:auto;" @Model.HtmlSortClass("Title", Model.boardSearch.SortOrder)>제목</th>
+                                    <th style="width:150px" @Model.HtmlSortClass("Company", Model.boardSearch.SortOrder)>회사</th>
+                                    <th style="width:100px" @Model.HtmlSortClass("UserName", Model.boardSearch.SortOrder)>글쓴이</th>
+                                    <th style="width:160px" @Model.HtmlSortClass("CreateDate", Model.boardSearch.SortOrder)>작성일</th>
+                                    <th style="width:80px" @Model.HtmlSortClass("ViewCnt", Model.boardSearch.SortOrder)>조회수</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 @foreach (BoardItemModel board in Model.boardItems)
                                 {
-                                    @board.HtmlTest("Title")
                                     <tr role="row" class="odd" data-boardID="@board.ItemID">
-                                        <td class="ellipsis"></td>
+                                        <td class="ellipsis">@board.ItemID</td>
                                         <td class="ellipsis">@board.Title</td>
                                         <td class="ellipsis">@board.CreateID</td>
                                         <td class="ellipsis">@board.CreateName</td>

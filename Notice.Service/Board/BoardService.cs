@@ -221,10 +221,10 @@ namespace Notice.Service
                 strSql = strSql.Replace("%{SortColumn}", searchModel.SortType);
             }
 
-            if (string.IsNullOrEmpty(searchModel.SortOrder))
-                searchModel.SortOrder = "Desc";
+            //if (string.IsNullOrEmpty(searchModel.SortOrder))
+            //    searchModel.SortOrder = "Desc";
 
-            strSql = strSql.Replace("%{SortOrder}", searchModel.SortOrder);
+            //strSql = strSql.Replace("%{SortOrder}", searchModel.SortOrder);
 
             return strSql;
         }

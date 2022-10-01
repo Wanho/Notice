@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Notice.Data.Core;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -66,6 +67,28 @@ namespace System.Web.Mvc
 
 			return new MvcHtmlString("name=\"" + name + "\" id=\"bt" + name + "\" value=\"" + p.GetValue(entity, null) + "\"");
 		}
+
+		public static MvcHtmlString HtmlSortClass<TModel>(this TModel model, string name, SortOrder order)
+		{
+			string returnStr = "";
+
+            Type type = model.GetType();
+            var property = type.GetProperty(name);
+
+			if(property != null)
+			{
+                var value = property.GetValue(model, null);
+
+                returnStr = "class='sorting_asc' aria-sort='ascending'";
+                if (SortOrder.Desc == order)
+                {
+                    returnStr = "class='sorting_desc' aria-sort='descending'";
+                }
+            }
+			
+
+            return new MvcHtmlString(returnStr);
+        }
 	}
 
 }

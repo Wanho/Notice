@@ -52,8 +52,7 @@ namespace Notice.Data.Core
         public static readonly BoardSortType BoardName;
         public static readonly BoardSortType Company;
         public static readonly BoardSortType CreateDate;
-        public static readonly BoardSortType SortCreateDate;
-            }
+    }
 
     public sealed class FileExtentionType : Code<FileExtentionType>
     {

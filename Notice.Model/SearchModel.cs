@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Notice.Data.Core;
+using System;
 
 namespace Notice.Model
 {
@@ -25,7 +26,7 @@ namespace Notice.Model
 
         public string DateType { set; get; }
 
-        public string SortOrder { set; get; }
+        public SortOrder SortOrder { set; get; } = SortOrder.Desc;
         public string SortColumn { set; get; }
         public string SortType { set; get; }
     }
